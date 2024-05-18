@@ -20,14 +20,14 @@ const Login = () => {
     .then((response)=>{
       console.log("Login successful", response);
 
-      const { token, employeeFound } = response;
+      const { token, employee } = response;
         
         // Store token and user data in local storage
         localStorage.setItem('token', token);
-        localStorage.setItem('user', JSON.stringify(employeeFound));
+        localStorage.setItem('user', JSON.stringify(employee));
 
       dispatch(setToken(token))
-      dispatch(setLoggedInUserData(employeeFound))
+      dispatch(setLoggedInUserData(employee))
       toast.success("login successful")
       setTimeout(()=>{
         navigate('/work-location')

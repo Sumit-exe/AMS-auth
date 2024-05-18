@@ -3,12 +3,14 @@ import express from 'express';
 import mongoose from 'mongoose';
 import bodyParser from 'body-parser';
 import dotenv from 'dotenv';
+import cors from 'cors'; 
 import authRoutes from './routes/authRoutes.js'; 
 dotenv.config();
 
 const app = express();
 
 app.use(bodyParser.json());
+app.use(cors());
 
 const db = process.env.MONGO_URI || 'mongodb://localhost:27017/ams';
 

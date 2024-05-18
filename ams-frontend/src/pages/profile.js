@@ -2,12 +2,11 @@ import React, { useEffect, useState } from 'react';
 import SideBar from '../components/SideBar';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-
+import authService from '../services/auth.js'
 const Profile = () => {
     const [hamActive, setHamActive] = useState(false);
     const [editProfileModal, seteditProfileModal] = useState(false);
 
-    const currentUser = useSelector(state => state.user);
     const navigate = useNavigate();
 
     const [user, setUser] = useState();
@@ -28,6 +27,7 @@ const Profile = () => {
     }, [navigate]);
 
     const [employee, setEmployee] = useState({
+        emmployeeId: user?.employeeId,
         employeeFullName: '',
         employeeEmail: '',
         employeePhoneNo: '',
@@ -38,6 +38,7 @@ const Profile = () => {
     useEffect(() => {
         if (user) {
             setEmployee({
+                employeeId: user.employeeId,
                 employeeFullName: user.employeeFullName,
                 employeeEmail: user.employeeEmail,
                 employeePhoneNo: user.employeePhoneNo,
@@ -50,8 +51,13 @@ const Profile = () => {
     const handleEditProfile = (e) => {
         e.preventDefault();
         // Handle profile update logic here
-
-        localStorage.setItem('user', JSON.stringify(employee));
+        authService.handleUpdate(employee,token)
+        .then((response)=>{
+            localStorage.setItem('user', JSON.stringify(response));
+            seteditProfileModal(false)
+        }).catch((error)=>{
+            console.log(error)
+        })
     };
 
     return (
@@ -59,27 +65,60 @@ const Profile = () => {
             <div>
                 <SideBar hamActive={hamActive} setHamActive={setHamActive} />
             </div>
-            <div className={`${hamActive ? 'w-[75%] max-sm:w-full' : 'w-full'} h-[100vh] flex p-3 flex-col items-center`}>
+            <div className={`${hamActive ? 'w-[75%] max-sm:w-full h-[100vh]' : 'w-full '}  flex p-3 flex-col items-center`}>
                 <div className='w-full h-full flex justify-center items-center'>
                     {!editProfileModal && (
-                        <div className='bg-light-green p-4 rounded shadow border-2 flex justify-center items-center'>
-                            <div className='p-3'>
-                                <img src={employee.employeeAvatar || "https://static.vecteezy.com/system/resources/thumbnails/005/129/844/small_2x/profile-user-icon-isolated-on-white-background-eps10-free-vector.jpg"} alt="profile photo" className='bg-white h-40 w-40 rounded-full' />
-                            </div>
-                            <div className='text-main-green uppercase font-semibold'>
-                                <h2>Employee Id: <span>{user?.employeeId}</span></h2>
-                                <h2>FullName: <span>{employee.employeeFullName}</span></h2>
-                                <h2>Email: <span>{employee.employeeEmail}</span></h2>
-                                <h2>Phone Number: <span>{employee.employeePhoneNo}</span></h2>
-                                <h2>employeeAadhar: <span>{employee.employeeAadhar}</span></h2>
-                                <h2>Team Id: <span>{user?.employeeTeamId || "-"}</span></h2>
-                                <h2>Team: <span>{user?.employeeTeamName || "-"}</span></h2>
-                                <h2>Role: <span>{user?.employeeRole || "-"}</span></h2>
-                                <h2>Manager Id: <span>{user?.employeeManagerId || "-"}</span></h2>
-                                <h2>Manager Name: <span>{user?.employeeManagerName || "-"}</span></h2>
-                                <button className='bg-main-green text-white p-2 m-2 rounded' onClick={() => seteditProfileModal(!editProfileModal)}>Edit profile</button>
-                            </div>
+                        <div className='bg-light-green p-8 rounded-lg shadow-lg border-2 flex flex-col md:flex-row items-center space-y-8 md:space-y-0 md:space-x-12'>
+                        <div className='flex flex-col items-center'>
+                          <img src={employee.employeeAvatar || "https://static.vecteezy.com/system/resources/thumbnails/005/129/844/small_2x/profile-user-icon-isolated-on-white-background-eps10-free-vector.jpg"} alt="profile photo" className='bg-white h-40 w-40 rounded-full shadow-md' />
+                          <button className='bg-main-green text-white p-3 rounded mt-4' onClick={() => seteditProfileModal(!editProfileModal)}>Edit Profile</button>
                         </div>
+                        <div className='flex flex-col space-y-4 w-full md:w-auto'>
+                          <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
+                            <div className='flex justify-between'>
+                              <span className='font-semibold text-gray-700'>Employee ID:</span>
+                              <span className='text-gray-900 truncate' title={employee.employeeId || "-"}>{employee.employeeId || "-"}</span>
+                            </div>
+                            <div className='flex justify-between'>
+                              <span className='font-semibold text-gray-700'>Full Name:</span>
+                              <span className='text-gray-900 truncate max-w-xs' title={employee.employeeFullName}>{employee.employeeFullName}</span>
+                            </div>
+                            <div className='flex justify-between'>
+                              <span className='font-semibold text-gray-700'>Email:</span>
+                              <span className='text-gray-900 truncate max-w-xs' title={employee.employeeEmail}>{employee.employeeEmail}</span>
+                            </div>
+                            <div className='flex justify-between'>
+                              <span className='font-semibold text-gray-700'>Phone Number:</span>
+                              <span className='text-gray-900 truncate' title={employee.employeePhoneNo}>{employee.employeePhoneNo}</span>
+                            </div>
+                            <div className='flex justify-between'>
+                              <span className='font-semibold text-gray-700'>Aadhar:</span>
+                              <span className='text-gray-900 truncate' title={employee.employeeAadhar}>{employee.employeeAadhar}</span>
+                            </div>
+                            <div className='flex justify-between'>
+                              <span className='font-semibold text-gray-700'>Team ID:</span>
+                              <span className='text-gray-900 truncate' title={employee.employeeTeamId || "-"}>{employee.employeeTeamId || "-"}</span>
+                            </div>
+                            <div className='flex justify-between'>
+                              <span className='font-semibold text-gray-700'>Team:</span>
+                              <span className='text-gray-900 truncate' title={employee.employeeTeamName || "-"}>{employee.employeeTeamName || "-"}</span>
+                            </div>
+                            <div className='flex justify-between'>
+                              <span className='font-semibold text-gray-700'>Role:</span>
+                              <span className='text-gray-900 truncate' title={employee.employeeRole || "-"}>{employee.employeeRole || "-"}</span>
+                            </div>
+                            <div className='flex justify-between'>
+                              <span className='font-semibold text-gray-700'>Manager ID:</span>
+                              <span className='text-gray-900 truncate' title={employee.employeeManagerId || "-"}>{employee.employeeManagerId || "-"}</span>
+                            </div>
+                            <div className='flex justify-between'>
+                              <span className='font-semibold text-gray-700'>Manager Name:</span>
+                              <span className='text-gray-900 truncate' title={employee.employeeManagerName || "-"}>{employee.employeeManagerName || "-"}</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      
                     )}
                     {/* edit modal */}
                     {editProfileModal && (
