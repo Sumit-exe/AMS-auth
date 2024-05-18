@@ -1,4 +1,4 @@
-import express, { json } from "express";
+import express from "express";
 import mongoose from "mongoose";
 import employeeRoutes from "./routes/employeeRoutes.js";
 import cors from 'cors';
@@ -9,6 +9,7 @@ const PORT = 8000;
 
 app.use(express.json());
 app.use(cors());
+// app.use(bodyParser.json());
 
 const mongoUrl = "mongodb://localhost:27017/ams";
 

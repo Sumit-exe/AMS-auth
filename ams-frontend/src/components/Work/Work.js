@@ -1,21 +1,29 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState} from 'react'
 import "./Work.css";
 import workingRemotely from "../../assets/images/workRemote.svg";
 import workOffice from "../../assets/images/workOffice.svg";
 import ibmLogo from "../../assets/images/IBM_LOGO.png";
 import { useNavigate } from "react-router-dom";
-import {  toast } from 'react-toastify';
+import { toast } from 'react-toastify';
+import { useDispatch} from 'react-redux';
+import { setWorkLocation } from '../../redux/slices/userSlice';
+
 const Work = () => {
     const navigate = useNavigate();
     const [workingRemote, setWorkingRemote] = useState(false);
 
-    const handleWorkingRemoteData = () => {
-        setWorkingRemote(true);
-        navigate('/home')
-        window.location.reload();
-    }
-    const workFromOffice = () => {
+    const dispatch = useDispatch();
 
+    const handleWorkingRemote = () => {
+        setWorkingRemote(true);
+        dispatch(setWorkLocation(workingRemote))
+        
+        toast.success("Have a Productive Day")
+        navigate('/');
+        // window.location.reload();
+    }
+
+    const workFromOffice = () => {
         function isInRange(myLat, myLon, targetLat, targetLon, range) {
             const R = 6371e3; // Radius of the Earth in meters
             const φ1 = myLat * Math.PI / 180; // φ, λ in radians
@@ -48,16 +56,15 @@ const Work = () => {
                 const range = 1200; // Radius in meters
 
                 if (isInRange(latitude, longitude, targetLat, targetLon, range)) {
+                    setWorkingRemote(false)
                     console.log("You are in range.");
+                    dispatch(setWorkLocation(workingRemote))
                     toast.success("Have a Productive Day")
                     navigate('/')
-                    
                 } else {
                     console.log("You are out of range.");
                     toast("out of range From Office Premises. Redirecting to login page")
                     navigate('/login')
-
-
                 }
                 console.log(navigator);
             }, (error) => {
@@ -79,7 +86,7 @@ const Work = () => {
                 <div className=' w-50 d-flex flex-column align-items-center justify-content-center' >
                     <div className='bg-light-blue w-75  d-flex flex-column align-items-center  rounded p-3 m-5 shadow'>
                         <img className='w-75 work-img' src={workingRemotely} />
-                        <button className='bg-main-blue border-0 px-4 py-3 rounded-2 text-light fw-medium shadow hover ' onClick={handleWorkingRemoteData}>Working Remotely</button>
+                        <button className='bg-main-blue border-0 px-4 py-3 rounded-2 text-light fw-medium shadow hover ' onClick={handleWorkingRemote}>Working Remotely</button>
                     </div>
                 </div>
 

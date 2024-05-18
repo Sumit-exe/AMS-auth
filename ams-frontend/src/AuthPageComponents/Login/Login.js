@@ -3,19 +3,31 @@ import authService from '../../services/auth.js';
 import {useNavigate} from "react-router-dom";
 import "./Login.css";
 import {  toast } from 'react-toastify';
+import { useDispatch } from 'react-redux';
+import { setLoggedInUserData, setToken } from '../../redux/slices/userSlice.js';
 
 const Login = () => {
   
   const navigate = useNavigate();
-
+  const dispatch = useDispatch()
   const [employee, setEmployee] = useState({employeeEmail:'',employeePassword:''});
 
+  
   const handleLogin=async(e)=>{
     e.preventDefault();
     
     await authService.handleLogin(employee)
     .then((response)=>{
       console.log("Login successful", response);
+
+      const { token, employeeFound } = response;
+        
+        // Store token and user data in local storage
+        localStorage.setItem('token', token);
+        localStorage.setItem('user', JSON.stringify(employeeFound));
+
+      dispatch(setToken(token))
+      dispatch(setLoggedInUserData(employeeFound))
       toast.success("login successful")
       setTimeout(()=>{
         navigate('/work-location')
@@ -23,8 +35,7 @@ const Login = () => {
     })
     .catch((error)=>{
       console.error("Error logging in:", error);
-      toast.error("Invalid credentials")
-      
+      toast.error("Invalid credentials")  
     })
 
   }
