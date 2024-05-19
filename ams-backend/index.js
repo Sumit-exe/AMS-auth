@@ -20,5 +20,5 @@ mongoose.connect(db, { useNewUrlParser: true, useUnifiedTopology: true })
 
 app.use('/', authRoutes); // Use employeeRoutes for employee-related routes
 
-const PORT = process.env.PORT || 6000;
+const PORT = process.env.PORT || 8000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
