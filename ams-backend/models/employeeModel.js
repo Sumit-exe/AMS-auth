@@ -30,7 +30,7 @@ const employeeSchema = new mongoose.Schema({
         required: true
     },
     employeeAvatar: {
-        type: String,
+        type: String, // This will store the path or URL of the uploaded image
     },
     employeeTeamId: {
         type: String,

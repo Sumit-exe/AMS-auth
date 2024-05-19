@@ -13,6 +13,7 @@ const LogOut = () => {
       <div className={` ${hamActive ? 'w-[75%]' : 'w-full'} flex vh-100`}>
         LogOut
       </div>
+    
 
     </div>
     );
