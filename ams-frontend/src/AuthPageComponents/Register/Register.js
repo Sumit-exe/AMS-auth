@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import authService from '../../services/auth';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import attendanceService from '../../services/attendance.service';
 
 const Register = () => {
   const navigate = useNavigate()
@@ -57,17 +58,25 @@ const Register = () => {
     console.log(employee);
     if (validation()) {
       await authService.handleRegister(employee)
-        .then((response) => {
+        .then(async (response) => {
           console.log("Register successful", response);
-          toast.success("Registered Successfully !!! Navigating to Login Page")
-          setTimeout(() => {
-            navigate('/login')
-          }, 1000);
+          await attendanceService.handleAddAttendance({...response,workDetails:[]})
+          .then((response) => {
+            console.log(response);
+            toast.success("Registered Successfully !!! Navigating to Login Page")
+            setTimeout(() => {
+              navigate('/login')
+            }, 1000);
+          }).catch((error) => {
+            setErrorMsg(error.response)
+            console.error("Error logging in:" + error);
+            toast.error("Error Registering ");
+          })
         })
         .catch((error) => {
           setErrorMsg(error.response)
           console.error("Error logging in:" + error);
-          toast.error("Error Registering : employee already exists");
+          toast.error("Error Registering ");
         })
     }
     else {
@@ -85,7 +94,7 @@ const Register = () => {
           <h3 className='text-center py-2'>SIGN UP</h3>
 
           <label>Enter Full Name</label>
-          <input type='text' className='w-100 p-1 mb-3 'required onChange={(e) => { setEmployee({ ...employee, employeeFullName: e.target.value }) }} />
+          <input type='text' className='w-100 p-1 mb-3 ' required onChange={(e) => { setEmployee({ ...employee, employeeFullName: e.target.value }) }} />
 
           <label>Enter Email</label>
           <input type='email' className='w-100 p-1 mb-3' required onChange={(e) => { setEmployee({ ...employee, employeeEmail: e.target.value }) }} />
@@ -103,7 +112,7 @@ const Register = () => {
           </div>
 
           <label>Password</label>
-          <input type='password' className='w-100 p-1 mb-3'required onChange={(e) => { setEmployee({ ...employee, employeePassword: e.target.value }) }} />
+          <input type='password' className='w-100 p-1 mb-3' required onChange={(e) => { setEmployee({ ...employee, employeePassword: e.target.value }) }} />
 
           <label>Confirm Password</label>
           <input type='password' className='w-100 p-1 mb-3' required onChange={(e) => setConfirmPassword(e.target.value)} />
