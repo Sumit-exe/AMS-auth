@@ -50,11 +50,14 @@ const SideBar = ({ hamActive, setHamActive }) => {
         if (storedEmployee) {
             setEmployee(JSON.parse(storedEmployee));
         }
+        else{
+            navigate('/login')
+        }
     }, []);
 
-    if (!employee) {
-        return <div>Loading...</div>; // or any loading indicator
-    }
+    // if (!employee) {
+    //     return <div>Loading...</div>; // or any loading indicator
+    // }
 
 
     return (
