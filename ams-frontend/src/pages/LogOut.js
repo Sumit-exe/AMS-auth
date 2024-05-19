@@ -26,6 +26,7 @@ const LogOut = () => {
     };
 
     return (
+
         <div className='w-full flex justify-between'>
             <div>
                 <SideBar hamActive={hamActive} setHamActive={setHamActive} />
@@ -36,6 +37,7 @@ const LogOut = () => {
                 </button>
             </div>
         </div>
+
     );
 }
 

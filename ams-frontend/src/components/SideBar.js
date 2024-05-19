@@ -26,6 +26,7 @@ const SideBar = ({ hamActive, setHamActive }) => {
             name: "Logout",
             redirect: "/logout"
         }
+
     ]
     const adminUlElements = [
         {
