@@ -38,9 +38,6 @@ const employeeSchema = new mongoose.Schema({
     employeeTeamName: {
         type: String,
     },
-    employeeIsManager: {
-        type: Boolean,
-    },
     employeeManagerId: {
         type: String,
     },
@@ -50,9 +47,7 @@ const employeeSchema = new mongoose.Schema({
     employeeRole: {
         type: String,
     },
-    employeeIsAdmin: {
-        type: Boolean,
-    },
+    
 });
 
 const Employee = mongoose.model("Employee", employeeSchema);

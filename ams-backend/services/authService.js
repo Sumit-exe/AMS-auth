@@ -35,11 +35,9 @@ const authService = {
                 employeeAvatar: "",
                 employeeTeamId: "",
                 employeeTeamName: "",
-                employeeIsManager: false,
                 employeeManagerId: "",
                 employeeManagerName: "",
-                employeeRole: "",
-                employeeIsAdmin: false,
+                employeeRole: "employee"
             });
 
             return newEmployee;
