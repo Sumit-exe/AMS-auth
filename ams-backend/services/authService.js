@@ -57,6 +57,13 @@ const authService = {
         }
         const token = jwt.sign({ employeeEmail: employee.employeeEmail }, JWT_SECRET, { expiresIn: '24h' });
         return { employee, token };
+    },
+    getAllEmps: async () => {
+        const employees = await Employee.find({ });
+        if (!employees) {
+            throw new Error('No Employees found');
+        }
+        return employees ;
     }
 };
 

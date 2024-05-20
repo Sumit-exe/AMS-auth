@@ -154,6 +154,8 @@ const sampleData = {
   },
 };
 
+
+
 const CustomBarChart = () => {
   const [month, setMonth] = useState(new Date());
 

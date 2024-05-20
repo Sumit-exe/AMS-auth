@@ -11,7 +11,7 @@ const SideBar = ({ hamActive, setHamActive }) => {
     const navigate = useNavigate()
     const currentUser = useSelector(state => state.user)
 
-    const [employee, setEmployee] = useState('');
+    const [employee,  setEmployee] = useState('');
 
     const employeeUlElements = [
         {

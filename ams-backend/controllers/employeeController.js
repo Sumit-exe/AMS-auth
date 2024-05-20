@@ -60,5 +60,13 @@ const updateEmployee = async (req, res) => {
         res.status(400).json({ message: error.message });
     }
 };
+const getAllEmps = async (req, res) => {
+    try {
+        const employees = await authService.getAllEmps();
+        res.status(200).json( employees );
+    } catch (error) {
+        res.status(400).json({ message: error.message });
+    }
+};
 
-export default { register, login, updateEmployee, upload };
+export default { register, login, updateEmployee, upload,getAllEmps };

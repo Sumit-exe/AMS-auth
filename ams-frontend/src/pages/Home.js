@@ -1,8 +1,32 @@
 import React, { useEffect, useState } from 'react';
 import SideBar from '../components/SideBar';
+import attendanceService from '../services/attendance.service';
 
 const Home = () => {
   const [hamActive, setHamActive] = useState(false);
+
+// pending
+const updateEmpAttendance = async () => {
+  const data = { 
+      workDetails: [
+          {
+              date: '2024-05-01', // Use a valid date format
+              sessionTimeIn: '09:10:13',
+              sessionTimeOut: '17:00:00',
+              isWorkingRemotely: true 
+          }
+      ]
+  };
+  await attendanceService.handleUpdateEmpAttendance('E00M9K5X', data)
+      .then((response) => {
+          console.log(response);
+      })
+      .catch((error) => {
+          console.log(error);
+      });
+}
+updateEmpAttendance();
+// -------------------
 
   // Clock
   const [time, setTime] = useState(0);
