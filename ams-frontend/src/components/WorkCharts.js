@@ -5,12 +5,12 @@ import {
 import { format, subMonths, addMonths } from 'date-fns';
 import attendanceService from '../services/attendance.service';
 
-const WorkCharts = ({empId}) => {
+const WorkCharts = ({ empId }) => {
     const [sampleData, setSampleData] = useState(null);
     const [month, setMonth] = useState(new Date());
 
     useEffect(() => {
-        // const user = localStorage.getItem('user')
+        console.log(empId);
         const fetchAttendanceData = async () => {
             try {
                 const response = await attendanceService.handleGetAttendanceByEmpId(empId);
@@ -21,17 +21,11 @@ const WorkCharts = ({empId}) => {
             }
         };
         fetchAttendanceData();
-    }, []);
+    }, [empId]);
 
     const formatDate = (dateString) => {
         const [weekday, month, day, year] = dateString.split(' ');
         return new Date(`${month} ${day}, ${year}`);
-    };
-
-    const calculateWorkHours = (start, end) => {
-        const startTime = new Date(`1970-01-01T${start}Z`);
-        const endTime = new Date(`1970-01-01T${end}Z`);
-        return (endTime - startTime) / (1000 * 60 * 60);
     };
 
     // Ensure sampleData and sampleData.workDetails are defined before using them
@@ -43,11 +37,10 @@ const WorkCharts = ({empId}) => {
         const entryDate = formatDate(entry.date);
         return entryDate.getMonth() === month.getMonth() && entryDate.getFullYear() === month.getFullYear();
     }).map((entry) => {
-        const workHours = calculateWorkHours(entry.sessionStartTime, entry.sessionEndTime);
         return {
             date: entry.date,
-            workHours,
-            isWorkingRemotely: entry.isWorkingRemotely,
+            workHours: parseFloat(entry.workHours), // Ensure workHours is a number
+            workingRemotely: entry.workingRemotely,
         };
     });
 
@@ -102,7 +95,7 @@ const WorkCharts = ({empId}) => {
                     <Legend />
                     <Bar dataKey="workHours">
                         {filteredData.map((entry, index) => (
-                            <Cell key={`cell-${index}`} fill={entry.isWorkingRemotely ? '#169158' : '#396ee5'} />
+                            <Cell key={`cell-${index}`} fill={entry.workingRemotely ? '#169158' : '#396ee5'} />
                         ))}
                         <LabelList dataKey="workHours" content={<CustomLabel />} />
                     </Bar>
