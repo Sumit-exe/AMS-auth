@@ -5,46 +5,13 @@ import {
 import { format, subMonths, addMonths } from 'date-fns';
 import attendanceService from '../services/attendance.service';
 
-// Sample Data
-const sampleData = {
-    Emp004: {
-        Attendance: [
-            { date: 'Wed May 1 2024', workHours: 8, sessionTimeIn: '17:00:00', sessionTimeOut: '09:10:13', workingRemotely: true },
-            { date: 'Thu May 2 2024', workHours: 8, sessionTimeIn: '17:00:00', sessionTimeOut: '09:19:13', workingRemotely: false },
-            { date: 'Fri May 3 2024', workHours: 8, sessionTimeIn: '10:00:00', sessionTimeOut: '15:00:00', workingRemotely: true },
-            { date: 'Sun May 4 2024', workHours: 8, sessionTimeIn: '17:00:00', sessionTimeOut: '09:10:13', workingRemotely: true },
-            { date: 'Mon May 5 2024', workHours: 8, sessionTimeIn: '08:30:00', sessionTimeOut: '18:00:00', workingRemotely: false },
-            { date: 'Tue May 6 2024', workHours: 8, sessionTimeIn: '17:00:00', sessionTimeOut: '09:10:13', workingRemotely: false },
-            { date: 'Wed May 7 2024', workHours: 8, sessionTimeIn: '09:44:13', sessionTimeOut: '17:09:00', workingRemotely: true },
-            { date: 'Thu May 8 2024', workHours: 8, sessionTimeIn: '17:00:00', sessionTimeOut: '09:00:00', workingRemotely: false },
-            { date: 'Fri May 9 2024', workHours: 8, sessionTimeIn: '09:30:00', sessionTimeOut: '17:30:00', workingRemotely: false },
-            { date: 'Sat May 10 2024', workHours: 8, sessionTimeIn: '00:00:00', sessionTimeOut: '00:00:00', workingRemotely: false },
-            { date: 'Sun May 11 2024', workHours: 8, sessionTimeIn: '00:00:00', sessionTimeOut: '00:00:00', workingRemotely: false },
-            { date: 'Mon May 12 2024', workHours: 8, sessionTimeIn: '09:15:00', sessionTimeOut: '16:45:00', workingRemotely: true },
-            { date: 'Tue May 13 2024', workHours: 8, sessionTimeIn: '08:45:00', sessionTimeOut: '17:45:00', workingRemotely: false },
-            { date: 'Wed May 14 2024', workHours: 8, sessionTimeIn: '10:00:00', sessionTimeOut: '18:00:00', workingRemotely: false },
-            { date: 'Thu May 15 2024', workHours: 8, sessionTimeIn: '09:00:00', sessionTimeOut: '17:00:00', workingRemotely: true },
-            { date: 'Fri May 16 2024', workHours: 8, sessionTimeIn: '09:10:13', sessionTimeOut: '17:15:00', workingRemotely: false },
-            { date: 'Sat May 17 2024', workHours: 8, sessionTimeIn: '00:00:00', sessionTimeOut: '00:00:00', workingRemotely: false },
-            { date: 'Sun May 18 2024', workHours: 8, sessionTimeIn: '00:00:00', sessionTimeOut: '00:00:00', workingRemotely: false },
-            { date: 'Wed June 1 2024', workHours: 8, sessionTimeIn: '09:10:13', sessionTimeOut: '17:00:00', workingRemotely: false },
-            { date: 'Thu June 2 2024', workHours: 8, sessionTimeIn: '09:19:13', sessionTimeOut: '17:11:00', workingRemotely: false },
-            { date: 'Fri June 3 2024', workHours: 8, sessionTimeIn: '00:00:00', sessionTimeOut: '00:00:00', workingRemotely: true },
-            { date: 'Sun June 4 2024', workHours: 8, sessionTimeIn: '09:10:13', sessionTimeOut: '17:31:00', workingRemotely: true },
-            { date: 'Mon June 5 2024', workHours: 8, sessionTimeIn: '09:10:13', sessionTimeOut: '16:55:00', workingRemotely: true },
-            { date: 'Tue June 6 2024', workHours: 8, sessionTimeIn: '09:10:13', sessionTimeOut: '17:15:00', workingRemotely: false },
-            { date: 'Wed June 7 2024', workHours: 8, sessionTimeIn: '09:44:13', sessionTimeOut: '17:09:00', workingRemotely: false },
-        ],
-    },
-};
-
-const CustomBarChart = ({ empId }) => {
+const WorkCharts = ({ empId }) => {
     const [sampleData, setSampleData] = useState(null);
     const [month, setMonth] = useState(new Date());
 
     useEffect(() => {
+        console.log(empId);
         const fetchAttendanceData = async () => {
-          console.log(empId)
             try {
                 const response = await attendanceService.handleGetAttendanceByEmpId(empId);
                 console.log(response.data);
@@ -141,4 +108,4 @@ const CustomBarChart = ({ empId }) => {
     );
 };
 
-export default CustomBarChart;
+export default WorkCharts;

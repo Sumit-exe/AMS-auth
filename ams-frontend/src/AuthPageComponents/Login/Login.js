@@ -40,7 +40,6 @@ const Login = () => {
 
   }
 
-
   return (
     <div className='login-form d-flex justify-content-center w-100'>
       <div className='w-100 d-flex flex-column align-items-center gap-4'>

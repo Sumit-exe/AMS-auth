@@ -5,9 +5,11 @@ import { RxCross2 } from "react-icons/rx";
 import { useSelector } from 'react-redux';
 
 const SideBar = ({ hamActive, setHamActive }) => {
+
     const navigate = useNavigate();
     const currentUser = useSelector((state) => state.user);
     const [employee, setEmployee] = useState('');
+
 
     const employeeUlElements = [
         { name: "Home", redirect: "/" },
